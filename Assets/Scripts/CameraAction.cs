@@ -7,9 +7,6 @@ public class CameraAction : MonoBehaviour {
     private Transform lookAt;
     private Vector3 startOffset;
     private Vector3 moveVector;
-    private float transition = 0.0f;
-    private float animationDuration = 8.0f;
-    private Vector3 animationOffset = new Vector3(0, 5, 5);
     
     private Rect comboPanelRect;
     private Rect[] btnRects;
@@ -23,20 +20,10 @@ public class CameraAction : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         moveVector = lookAt.position + startOffset;
         moveVector.x = 0;
-        moveVector.y = Mathf.Clamp(moveVector.y, 5, 7);
-        if(transition > 1.0f)
-        {
-            transform.position = moveVector;
-        }
-        else
-        {
-            transform.position = Vector3.Lerp(moveVector + animationOffset, moveVector, transition);
-            transition += Time.deltaTime + 1.0f / animationDuration;
-            transform.LookAt(lookAt.position + Vector3.up);
-        }
+        transform.position = moveVector;
 	}
 
     private void OnGUI()
@@ -57,7 +44,7 @@ public class CameraAction : MonoBehaviour {
         float screenHeight = Screen.height,
             screenWidth = Screen.width;
 
-        float btnAlign = Screen.width / 50f;//2%
+        float btnAlign = Screen.width / 25f;//2%
         float btnSize = (screenWidth - btnAlign * 5) / 4f; //   |_[]_[]_[]_[]_|   - панель кнопок
 
         float btnCoordY = screenHeight - btnAlign - btnSize;
@@ -69,9 +56,8 @@ public class CameraAction : MonoBehaviour {
         }
 
         float comboPanelHeight = screenHeight / 10f;
-        float comboPanelAlign = screenWidth / 25f;
-        float comboPanelWidth = screenWidth - 2 * comboPanelAlign;
-        comboPanelRect = new Rect(comboPanelAlign,comboPanelAlign,comboPanelWidth,comboPanelHeight);
+        float comboPanelWidth = screenWidth - 2 * btnAlign;
+        comboPanelRect = new Rect(btnAlign, btnAlign,comboPanelWidth,comboPanelHeight);
 
     }
 }
