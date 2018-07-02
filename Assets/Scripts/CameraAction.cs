@@ -38,13 +38,18 @@ public class CameraAction : MonoBehaviour {
         }
     }
 
+    /* 
+     * Отступ от краев 4%
+     * Размер комбо панели 92х10 в %
+     * Размер кнопок 20х20 % от ширины экрана
+     */
     private void setButtonPositions()
     {
         btnRects = new Rect[4];
         float screenHeight = Screen.height,
             screenWidth = Screen.width;
 
-        float btnAlign = Screen.width / 25f;//2%
+        float btnAlign = Screen.width / 25f;
         float btnSize = (screenWidth - btnAlign * 5) / 4f; //   |_[]_[]_[]_[]_|   - панель кнопок
 
         float btnCoordY = screenHeight - btnAlign - btnSize;
