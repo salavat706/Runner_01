@@ -13,7 +13,7 @@ public class SphereAction : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        rb.AddForce(Vector3.forward * Time.deltaTime * 5);
+        //rb.AddForce(Vector3.forward * 10);
         //transform.Translate(Vector3.forward * Time.deltaTime * 5);
 	}
 

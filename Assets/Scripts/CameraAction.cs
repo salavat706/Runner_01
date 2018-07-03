@@ -11,20 +11,68 @@ public class CameraAction : MonoBehaviour {
     private Rect comboPanelRect;
     private Rect[] btnRects;
 
-	// Use this for initialization
-	void Start () {
-        lookAt = GameObject.FindGameObjectWithTag("Player").transform;
-        startOffset = transform.position - lookAt.position;
 
+    public float comboResetSec;
+    private float comboResetTimer;
+    
+    /* Нужно написать для комбо класс контейнер.
+     * 1. Использовать строку для определения комбо или массив?
+     * 
+     */
+    private List<int> combo;
+    
+	void Start () {
+        combo = new List<int>();
+        comboResetTimer = comboResetSec;
+        setCameraOffset();
         setButtonPositions();
 	}
 	
-	// Update is called once per frame
 	void FixedUpdate () {
+
+        calcCombo();
+
+        moveCamera();
+
+        printCombo();
+
+    }
+
+    private void moveCamera()
+    {
         moveVector = lookAt.position + startOffset;
         moveVector.x = 0;
         transform.position = moveVector;
-	}
+    }
+
+    private void calcCombo()
+    {
+        if (combo.Count > 0)
+        {
+            comboResetTimer -= Time.deltaTime;
+
+            if (comboResetTimer < 0)
+            {
+                combo.Clear();
+                comboResetTimer = comboResetSec;
+            }
+
+            if (combo.Count > 4)
+                combo.RemoveRange(4, combo.Count - 4);
+        }
+    }
+
+    private void printCombo()
+    {
+        string res = "";
+
+        foreach (int item in combo)
+        {
+            res += item.ToString() + ' ';
+        }
+
+        print(res);
+    }
 
     private void OnGUI()
     {
@@ -34,8 +82,22 @@ public class CameraAction : MonoBehaviour {
         {
             bool btn = GUI.Button(btnRects[i], i.ToString());
             if (btn)
-                print(i.ToString());
+                combo.Insert(0, i);
         }
+
+        foreach (int i in combo)
+        {
+
+        }
+    }
+
+    /*
+     * 
+     */
+    private void setCameraOffset()
+    {
+        lookAt = GameObject.FindGameObjectWithTag("Player").transform;
+        startOffset = transform.position - lookAt.position;
     }
 
     /* 
